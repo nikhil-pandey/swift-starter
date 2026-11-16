@@ -1,0 +1,10 @@
+# Swift settings for every Swift target in this repo: Swift 6 language mode, Xcode's approachable-concurrency
+# upcoming features, and warnings as errors (like clippy's -Dwarnings for Rust).
+repo(
+    features = [
+        "swift.enable_v6",
+        "swift.treat_warnings_as_errors",
+        "swift.upcoming.InferIsolatedConformances",
+        "swift.upcoming.NonisolatedNonsendingByDefault",
+    ],
+)

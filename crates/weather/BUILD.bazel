@@ -1,0 +1,13 @@
+load("@crates//:defs.bzl", "all_crate_deps")
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+rust_library(
+    name = "weather",
+    srcs = glob(["src/**/*.rs"]),
+    # uniffi::setup_scaffolding!() reads the package name from Cargo.toml.
+    compile_data = ["Cargo.toml"],
+    # Bazel doesn't unify Cargo features, and every consumer here is an app FFI crate.
+    crate_features = ["uniffi"],
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(normal = True) + ["//crates/open-meteo"],
+)

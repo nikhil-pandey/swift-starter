@@ -1,0 +1,18 @@
+[package]
+name = "weather"
+version = "0.1.0"
+edition = "2024"
+license.workspace = true
+
+[features]
+# Derives UniFFI traits on the public types; enabled only by the app FFI crates (crates/*-ffi).
+uniffi = ["dep:uniffi"]
+
+[dependencies]
+open-meteo = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+uniffi = { workspace = true, optional = true }

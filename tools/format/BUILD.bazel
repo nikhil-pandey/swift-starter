@@ -1,0 +1,11 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
+exports_files(["swift_format_test.sh"])
+
+# `bazel run //tools/format` formats every Swift and Rust source in place.
+sh_binary(
+    name = "format",
+    srcs = ["format.sh"],
+    args = ["$(rootpath @rules_rust//:rustfmt)"],
+    data = ["@rules_rust//:rustfmt"],
+)

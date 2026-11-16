@@ -1,0 +1,11 @@
+[settings]
+# Ignore releases younger than 7 days; Renovate uses the same window (renovate.json).
+minimum_release_age = "7d"
+
+[tools]
+# Bazel itself is pinned in .bazelversion; bazelisk downloads it.
+bazelisk = "1.30.0"
+
+[env]
+# `bazel run` of an iOS app reuses a booted simulator instead of creating a temporary one and killing the rest.
+BAZEL_APPLE_PREFER_PERSISTENT_SIMS = "1"

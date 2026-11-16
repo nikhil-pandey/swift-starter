@@ -1,0 +1,22 @@
+load("@rules_xcodeproj//xcodeproj:defs.bzl", "top_level_target", "xcodeproj")
+
+exports_files([
+    ".swift-format",
+    "Cargo.lock",
+    "Cargo.toml",
+    "rustfmt.toml",
+])
+
+# `bazel run //:xcodeproj` generates Apps.xcodeproj; Xcode then builds through Bazel.
+xcodeproj(
+    name = "xcodeproj",
+    project_name = "Apps",
+    tags = ["manual"],
+    top_level_targets = [
+        top_level_target(
+            "//apps/weather:Weather",
+            target_environments = ["simulator"],
+        ),
+        "//apps/weather:WeatherUITests",
+    ],
+)

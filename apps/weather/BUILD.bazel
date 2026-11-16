@@ -1,0 +1,7 @@
+load("//tools/apple:defs.bzl", "ios_app")
+
+ios_app(
+    name = "Weather",
+    bundle_id = "org.example.weather",
+    deps = ["//crates/weather-ffi:WeatherCore"],
+)

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "group:all"],
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "groupName": "all dependencies"
+  },
+  "customManagers": [
+    {
+      "description": "Rust toolchain pinned in rust.toolchain(versions = [...]) in MODULE.bazel",
+      "customType": "regex",
+      "managerFilePatterns": ["/^MODULE\\.bazel$/"],
+      "matchStrings": ["versions = \\[\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\"\\]"],
+      "depNameTemplate": "rust",
+      "datasourceTemplate": "rust-version"
+    }
+  ]
+}

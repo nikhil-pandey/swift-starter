@@ -1,0 +1,11 @@
+# iOS builds target the Apple silicon simulator by default; --config=device targets iPhone hardware.
+build --apple_platform_type=ios
+build:device --ios_multi_cpus=arm64
+
+# `bazel test` also lints: clippy (warnings are errors) and rustfmt on every Rust target.
+test --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect,@rules_rust//rust:defs.bzl%rustfmt_aspect
+test --output_groups=+clippy_checks,+rustfmt_checks
+build --@rules_rust//rust/settings:clippy_flags=-Dwarnings
+build --@rules_rust//rust/settings:rustfmt.toml=//:rustfmt.toml
+
+try-import %workspace%/user.bazelrc

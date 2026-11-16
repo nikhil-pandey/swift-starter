@@ -1,0 +1,12 @@
+[package]
+name = "uniffi-swift-bindgen"
+version = "0.1.0"
+edition = "2024"
+license.workspace = true
+publish = false
+
+[dependencies]
+anyhow = "1"
+camino = "1"
+# No `cargo-metadata`: bindings are read from the library alone, so this runs inside Bazel's sandbox.
+uniffi_bindgen = { version = "=0.32.2", default-features = false }

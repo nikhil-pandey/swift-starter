@@ -1,0 +1,9 @@
+load("@rules_apple//apple/testing/default_runner:ios_xctestrun_runner.bzl", "ios_xctestrun_runner")
+
+# Simulator for every app's UI tests. Reuses a matching booted device rather than creating one per run.
+# No os_version: the runner then picks the runtime Xcode pairs with the SDK, not a device-specific one.
+ios_xctestrun_runner(
+    name = "ios_simulator",
+    device_type = "iPhone 18 Pro",
+    visibility = ["//visibility:public"],
+)
