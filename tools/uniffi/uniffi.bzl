@@ -13,6 +13,12 @@ def uniffi_swift_library(name, library, crates, visibility = None):
         crates: Crate names in `library` that export UniFFI items; each yields `<crate>.swift` and `<crate>FFI.h`.
         visibility: Visibility of the Swift module.
     """
+    # Swift needs an Apple toolchain; other hosts skip the module instead of failing analysis.
+    apple_only = select({
+        "@platforms//os:ios": [],
+        "@platforms//os:macos": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    })
     swift_srcs = [crate + ".swift" for crate in crates]
     headers = [crate + "FFI.h" for crate in crates]
     native.genrule(
@@ -34,6 +40,7 @@ def uniffi_swift_library(name, library, crates, visibility = None):
             name = "{}_{}_ffi".format(name, crate),
             hdrs = [crate + "FFI.h"],
             aspect_hints = [":{}_{}_module".format(name, crate)],
+            target_compatible_with = apple_only,
         )
         ffi_modules.append(":{}_{}_ffi".format(name, crate))
 
@@ -41,6 +48,7 @@ def uniffi_swift_library(name, library, crates, visibility = None):
         name = name,
         srcs = swift_srcs,
         module_name = name,
+        target_compatible_with = apple_only,
         visibility = visibility,
         deps = ffi_modules + [library],
     )

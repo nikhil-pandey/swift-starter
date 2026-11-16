@@ -9,10 +9,10 @@
   },
   "customManagers": [
     {
-      "description": "Rust toolchain pinned in rust.toolchain(versions = [...]) in MODULE.bazel",
+      "description": "Rust toolchain pinned in toolchains.toolchain(version = ...) in MODULE.bazel",
       "customType": "regex",
       "managerFilePatterns": ["/^MODULE\\.bazel$/"],
-      "matchStrings": ["versions = \\[\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\"\\]"],
+      "matchStrings": ["toolchains\\.toolchain\\([^)]*\\bversion = \"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""],
       "depNameTemplate": "rust",
       "datasourceTemplate": "rust-version"
     }

@@ -12,8 +12,8 @@ New apps live alongside it in `apps/`.
 - The iOS Simulator runtime paired with that Xcode release, including an iPhone 18 Pro simulator for UI tests
 - [mise](https://mise.jdx.dev), which installs `bazelisk`; Bazel fetches everything else, including Rust
 
-The app targets iOS 27 or later. The Bazel Rust toolchains currently support Apple silicon hosts, the arm64 iOS
-Simulator, and arm64 iOS devices. No API key is needed to run the sample.
+The app targets iOS 27 or later, on the arm64 iOS Simulator and arm64 iOS devices. Linux hosts can build, test, and
+lint the Rust crates with the hermetic LLVM toolchain; the app and its Swift modules need macOS and Xcode. No API key is needed to run the sample.
 
 ## Usage
 

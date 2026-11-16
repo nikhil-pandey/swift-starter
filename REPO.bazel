@@ -8,3 +8,6 @@ repo(
         "swift.upcoming.NonisolatedNonsendingByDefault",
     ],
 )
+
+# Cargo builds into target/; Bazel never needs to look there.
+ignore_directories(["target"])
