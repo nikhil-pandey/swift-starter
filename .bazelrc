@@ -26,9 +26,10 @@ common --test_output=errors
 build --apple_platform_type=ios
 build:device --ios_multi_cpus=arm64
 
-# `bazel test` also runs clippy (warnings are errors) and rustfmt on every Rust target.
-test --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect,@rules_rust//rust:defs.bzl%rustfmt_aspect
-test --output_groups=+clippy_checks,+rustfmt_checks
+# `--config=lint` runs clippy (with Cargo.toml's lint levels) and rustfmt on every Rust target; `bazel test` always does.
+build:lint --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect,@rules_rust//rust:defs.bzl%rustfmt_aspect
+build:lint --output_groups=+clippy_checks,+rustfmt_checks
+test --config=lint
 common --@rules_rust//rust/settings:clippy_flag=-Dwarnings
 common --@rules_rust//rust/settings:rustfmt.toml=//:rustfmt.toml
 
