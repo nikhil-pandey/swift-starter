@@ -1,5 +1,5 @@
-load("@crates//:defs.bzl", "all_crate_deps")
-load("@rules_rust//rust:defs.bzl", "rust_static_library")
+load("@crates//weather-ffi:data.bzl", "all_crate_deps", "crate_data")
+load("@rules_rs//rs:rust_static_library.bzl", "rust_static_library")
 load("//tools/uniffi:uniffi.bzl", "uniffi_swift_library")
 
 # The single Rust static library linked into apps/weather.
@@ -9,8 +9,9 @@ rust_static_library(
     # uniffi::setup_scaffolding!() reads the package name from Cargo.toml.
     compile_data = ["Cargo.toml"],
     crate_name = "weather_ffi",
+    lint_config = crate_data().get("lint_config"),
     visibility = ["//visibility:public"],
-    deps = all_crate_deps(normal = True) + ["//crates/weather"],
+    deps = all_crate_deps(normal = True),
 )
 
 # Swift module `WeatherCore`: the Swift API apps/weather imports.

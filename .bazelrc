@@ -1,11 +1,43 @@
+# Reuse action outputs across checkouts, worktrees, and `bazel clean`, within a bounded size.
+common --disk_cache=~/.cache/bazel-disk-cache
+common --experimental_disk_cache_gc_max_size=20G
+common --nobuild_runfile_links
+
+# Share action outputs and test results through BuildBuddy's remote cache, and stream invocations to its results UI.
+# Without an API key, invocations are anonymous and publicly viewable; to use an organization, add
+# `common --remote_header=x-buildbuddy-api-key=<key>` to user.bazelrc.
+build --bes_results_url=https://app.buildbuddy.io/invocation/
+build --bes_backend=grpcs://remote.buildbuddy.io
+common --remote_cache=grpcs://remote.buildbuddy.io
+common --remote_timeout=10m
+common --remote_cache_compression
+common --nolegacy_important_outputs
+
+common --enable_platform_specific_config
+# macOS hosts build with Xcode's toolchain and SDKs. Linux hosts can build and lint the Rust crates with the hermetic
+# LLVM toolchain instead of probing for a local compiler.
+common:macos --@rules_rust//rust/settings:use_hermetic_macos_sdkroot=false
+common:linux --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+common:linux --extra_toolchains=@llvm//toolchain:all
+
+common --test_output=errors
+
 # iOS builds target the Apple silicon simulator by default; --config=device targets iPhone hardware.
 build --apple_platform_type=ios
 build:device --ios_multi_cpus=arm64
 
-# `bazel test` also lints: clippy (warnings are errors) and rustfmt on every Rust target.
+# `bazel test` also runs clippy (warnings are errors) and rustfmt on every Rust target.
 test --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect,@rules_rust//rust:defs.bzl%rustfmt_aspect
 test --output_groups=+clippy_checks,+rustfmt_checks
-build --@rules_rust//rust/settings:clippy_flags=-Dwarnings
-build --@rules_rust//rust/settings:rustfmt.toml=//:rustfmt.toml
+common --@rules_rust//rust/settings:clippy_flag=-Dwarnings
+common --@rules_rust//rust/settings:rustfmt.toml=//:rustfmt.toml
+
+common:ci --color=yes
+common:ci --curses=no
+common:ci --keep_going
+common:ci --lockfile_mode=error
+common:ci --verbose_failures
+# CI runners are short-lived and share outputs through the remote cache instead.
+common:ci --disk_cache=
 
 try-import %workspace%/user.bazelrc

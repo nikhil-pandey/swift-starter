@@ -12,8 +12,8 @@ New apps live alongside it in `apps/`.
 - The iOS Simulator runtime paired with that Xcode release, including an iPhone 18 Pro simulator for UI tests
 - [mise](https://mise.jdx.dev), which installs `bazelisk`; Bazel fetches everything else, including Rust
 
-The app targets iOS 27 or later. The Bazel Rust toolchains currently support Apple silicon hosts, the arm64 iOS
-Simulator, and arm64 iOS devices. No API key is needed to run the sample.
+The app targets iOS 27 or later, on the arm64 iOS Simulator and arm64 iOS devices. Linux hosts can build, test, and
+lint the Rust crates with the hermetic LLVM toolchain; the app and its Swift modules need macOS and Xcode. No API key is needed to run the sample.
 
 ## Usage
 
@@ -38,6 +38,10 @@ Device builds also need your own Apple signing configuration.
 
 Keep machine-specific Bazel flags and signing settings in `user.bazelrc`, which `.bazelrc` imports when present and Git
 ignores. Generated Xcode projects, bindings, build outputs, and signing credentials should stay out of version control.
+
+Bazel shares action outputs and test results through BuildBuddy's remote cache and streams each invocation to its
+results UI. Without an API key, invocations are anonymous and publicly viewable; add
+`common --remote_header=x-buildbuddy-api-key=<key>` to `user.bazelrc` (or `~/.bazelrc`) to use your organization.
 
 ## Data and location
 

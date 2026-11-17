@@ -6,7 +6,8 @@
 - `apps/<app>/`: SwiftUI app declared with `ios_app` (`//tools/apple:defs.bzl`). Platform services and presentation
   only; business logic belongs in Rust.
 - `crates/<domain>/`: plain Rust logic shared across apps. Public types derive UniFFI traits only behind the optional
-  `uniffi` feature (`#[cfg_attr(feature = "uniffi", derive(...))]`), which Bazel enables via `crate_features`.
+  `uniffi` feature (`#[cfg_attr(feature = "uniffi", derive(...))]`), which Bazel enables through
+  the workspace-unified features in `crate_data()`.
 - `crates/<app>-ffi/`: the one `rust_static_library` an app links, with thin `uniffi::Object` wrappers and the app's
   Swift module (`uniffi_swift_library`). List every crate that exports UniFFI items in its `crates`.
 - Swift settings (Swift 6, upcoming features, warnings as errors) come from `REPO.bazel`; don't repeat them as `copts`.
