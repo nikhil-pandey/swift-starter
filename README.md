@@ -39,6 +39,10 @@ Device builds also need your own Apple signing configuration.
 Keep machine-specific Bazel flags and signing settings in `user.bazelrc`, which `.bazelrc` imports when present and Git
 ignores. Generated Xcode projects, bindings, build outputs, and signing credentials should stay out of version control.
 
+Bazel shares action outputs and test results through BuildBuddy's remote cache and streams each invocation to its
+results UI. Without an API key, invocations are anonymous and publicly viewable; add
+`common --remote_header=x-buildbuddy-api-key=<key>` to `user.bazelrc` (or `~/.bazelrc`) to use your organization.
+
 ## Data and location
 
 Forecasts, air quality, and place searches use [Open-Meteo](https://open-meteo.com). Device coordinates are sent to its
